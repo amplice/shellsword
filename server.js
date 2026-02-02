@@ -743,6 +743,8 @@ app.get('/api/games', (req, res) => {
         p2: game.p2Name || 'P2',
         score: `${game.scores.p1}-${game.scores.p2}`,
         distance: game.distance,
+        lastResult: game.lastResult || '',
+        winner: game.winner || null,
       });
     }
   }
