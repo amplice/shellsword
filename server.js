@@ -730,6 +730,54 @@ app.get('/api/status', (req, res) => {
   });
 });
 
+// POST /api/exhibition — bot vs bot match for spectators
+app.post('/api/exhibition', (req, res) => {
+  // Check if there's already an active exhibition
+  for (const [id, game] of games) {
+    if (game.exhibition && game.phase !== 'over') {
+      return res.json({ gameId: id, status: 'already_running', message: 'Exhibition match in progress' });
+    }
+  }
+
+  const gameId = 'ex_' + (++gameIdCounter);
+  const d1 = req.body?.p1Difficulty || 'hard';
+  const d2 = req.body?.p2Difficulty || 'hard';
+  const game = {
+    id: gameId,
+    p1: genToken(), p2: genToken(),
+    p1Name: `Bot(${d1})`, p2Name: `Bot(${d2})`,
+    scores: { p1: 0, p2: 0 },
+    distance: 4,
+    turn: 0,
+    phase: 'input',
+    moves: { p1: null, p2: null },
+    lastResult: '',
+    winner: null,
+    exhibition: true,
+    botP1Difficulty: d1,
+    botP2Difficulty: d2,
+  };
+  games.set(gameId, game);
+  players.set(game.p1, { gameId, playerId: 'p1' });
+  players.set(game.p2, { gameId, playerId: 'p2' });
+
+  // Run the exhibition with delays between turns
+  function playExhibitionTurn() {
+    if (game.phase === 'over') return;
+    const p1State = getGameState(game, 'p1');
+    const p2State = getGameState(game, 'p2');
+    game.moves.p1 = botMove(p1State, game.botP1Difficulty);
+    game.moves.p2 = botMove(p2State, game.botP2Difficulty);
+    resolveIfReady(gameId);
+    if (game.phase !== 'over') {
+      setTimeout(playExhibitionTurn, 2000); // 2s between turns for spectators
+    }
+  }
+  setTimeout(playExhibitionTurn, 1000);
+
+  res.json({ gameId, status: 'started', message: `Exhibition: ${game.p1Name} vs ${game.p2Name}` });
+});
+
 // GET /api/games — list games
 app.get('/api/games', (req, res) => {
   const active = [];
