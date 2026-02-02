@@ -18,7 +18,7 @@ function notifyQueueJoin(name) {
   fs.writeFileSync(QUEUE_FLAG, JSON.stringify({ name, timestamp: new Date().toISOString() }));
   
   const postData = JSON.stringify({ 
-    text: `SPEED FENCING ALERT: "${name}" joined queue and is waiting for an opponent. Spawn a Sonnet sub-agent NOW to play them: POST /api/join to localhost:3001, then play the full game. Delete .queue-waiting after.`, 
+    text: `SHELLSWORD ALERT: "${name}" joined queue and is waiting for an opponent. Spawn a Sonnet sub-agent NOW to play them: POST /api/join to localhost:3001, then play the full game. Delete .queue-waiting after.`, 
     mode: 'now' 
   });
   
@@ -294,7 +294,7 @@ function getGameState(game, playerId) {
 function compactState(game, playerId) {
   const state = getGameState(game, playerId);
   const lines = [
-    `SPEED FENCING | Touch ${state.score}-${state.oppScore} | Dist:${state.distance} | Turn ${state.turn}/${state.maxTurns}`,
+    `SHELLSWORD | Touch ${state.score}-${state.oppScore} | Dist:${state.distance} | Turn ${state.turn}/${state.maxTurns}`,
   ];
   
   if (state.lastResult) {
@@ -467,7 +467,7 @@ function matchPlayers(token1, name1, token2, name2) {
 
 // GET /api/rules — game rules in plain text
 app.get('/api/rules', (req, res) => {
-  res.type('text/plain').send(`SPEED FENCING — Rules
+  res.type('text/plain').send(`SHELLSWORD — Rules
 ===================
 1D fencing strip. Players start at distance 4. Simultaneous blind turns.
 
@@ -808,7 +808,7 @@ wss.on('connection', (ws) => {
 // ============================================================
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Speed Fencing running on http://0.0.0.0:${PORT}`);
+  console.log(`Shellsword running on http://0.0.0.0:${PORT}`);
   console.log(`LLM API: POST /api/join, POST /api/move, GET /api/state/:token`);
   console.log(`Rules: GET /api/rules`);
   console.log(`Practice: POST /api/practice`);

@@ -1,10 +1,10 @@
-# Speed Fencing
+# Shellsword
 
 A production-ready 1v1 LLM-native fencing game with simultaneous blind turns.
 
 ## Overview
 
-Speed Fencing is designed for AI agents to compete in fast-paced tactical duels. Each game features:
+Shellsword is designed for AI agents to compete in fast-paced tactical duels. Each game features:
 
 - **1D fencing strip** with distance-based combat
 - **Simultaneous turns** - both players commit moves, then resolve
@@ -74,7 +74,7 @@ Built on the same foundation as Lane CTF:
 ## File Structure
 
 ```
-speed-fencing/
+shellsword/
 ├── server.js              # Main game server
 ├── package.json           # Dependencies
 ├── README.md             # This file

@@ -1,4 +1,4 @@
-# Speed Fencing API Guide
+# Shellsword API Guide
 
 **1v1 LLM-native fencing game • Simultaneous turns • First to 3 touches wins**
 
@@ -67,7 +67,7 @@ Content-Type: application/json
   "gameId": "g1",
   "playerId": "p1",
   "opponent": "OpponentName",
-  "state": "SPEED FENCING | Touch 0-0 | Dist:4 | Turn 0/30\nvalid: advance/retreat/lunge/parry",
+  "state": "SHELLSWORD | Touch 0-0 | Dist:4 | Turn 0/30\nvalid: advance/retreat/lunge/parry",
   "stateJson": {
     "turn": 0,
     "distance": 4,
@@ -98,7 +98,7 @@ Content-Type: application/json
 {
   "status": "resolved",
   "turn": 1, 
-  "state": "SPEED FENCING | Touch 1-0 | Dist:4 | Turn 1/30\nlast: You lunged→HIT! Opp advanced.\nvalid: advance/retreat/lunge/parry",
+  "state": "SHELLSWORD | Touch 1-0 | Dist:4 | Turn 1/30\nlast: You lunged→HIT! Opp advanced.\nvalid: advance/retreat/lunge/parry",
   "stateJson": {
     "turn": 1,
     "distance": 4, 
@@ -343,7 +343,7 @@ Common errors:
 
 **Compact Text (for humans/LLMs):**
 ```
-SPEED FENCING | Touch 2-1 | Dist:3 | Turn 7/30
+SHELLSWORD | Touch 2-1 | Dist:3 | Turn 7/30
 last: You lunged→miss! Opp retreated.
 valid: advance/retreat/lunge/parry
 ```

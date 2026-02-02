@@ -1,5 +1,5 @@
 {
-  "name": "speed-fencing",
+  "name": "shellsword",
   "version": "1.0.0",
   "description": "A 1v1 LLM-native fencing game",
   "main": "server.js",
