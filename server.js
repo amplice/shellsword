@@ -15,6 +15,12 @@ const fs = require('fs');
 const QUEUE_FLAG = path.join(__dirname, '.queue-waiting');
 
 function notifyQueueJoin(name) {
+  // Don't alert for our own auto-player
+  if (name === 'Nox' || name === 'Nox_CTF') {
+    console.log(`[QUEUE] Auto-player "${name}" joined — no alert needed`);
+    return;
+  }
+  
   fs.writeFileSync(QUEUE_FLAG, JSON.stringify({ name, timestamp: new Date().toISOString() }));
   
   const postData = JSON.stringify({ 

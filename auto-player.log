@@ -1,0 +1,17 @@
+[2026-02-03T02:35:44.050Z] === Shellsword Auto-Player started ===
+[2026-02-03T02:35:44.052Z] Joining queue (game 1)...
+[2026-02-03T02:35:44.129Z] Joined queue → token: e1530320...
+[2026-02-03T02:35:44.129Z] Match started!
+[2026-02-03T02:37:11.239Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T02:37:44.275Z] Turn 1: dist=2 score=0-0 → lunge
+[2026-02-03T02:37:50.286Z] Turn 2: dist=4 score=1-0 → advance
+[2026-02-03T02:37:53.293Z] Turn 3: dist=2 score=1-0 → parry
+[2026-02-03T02:37:59.304Z] Turn 4: dist=1 score=1-0 → lunge
+[2026-02-03T02:38:02.311Z] Turn 5: dist=4 score=2-0 → advance
+[2026-02-03T02:38:05.318Z] Turn 6: dist=2 score=2-0 → advance
+[2026-02-03T02:38:11.326Z] Turn 7: dist=1 score=2-0 → lunge
+[2026-02-03T02:38:14.334Z] Game over: WIN | Score: 3-0 | Turns: 8 | Game: g5
+[2026-02-03T02:38:14.334Z] Record: 1W-0L-0D (1 games)
+[2026-02-03T02:38:19.335Z] Joining queue (game 2)...
+[2026-02-03T02:38:19.341Z] Joined queue → token: b4ffcc9d...
+[2026-02-03T02:38:19.342Z] Match started!
