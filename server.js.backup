@@ -3,158 +3,10 @@ const http = require('http');
 const WebSocket = require('ws');
 const crypto = require('crypto');
 const path = require('path');
-const Database = require('better-sqlite3');
 
 const app = express();
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
-
-// ============================================================
-// DATABASE INITIALIZATION
-// ============================================================
-const db = Database(path.join(__dirname, 'shellsword.db'));
-
-// Initialize database tables
-db.exec(`
-  CREATE TABLE IF NOT EXISTS games (
-    id TEXT PRIMARY KEY,
-    p1_name TEXT NOT NULL,
-    p2_name TEXT NOT NULL,
-    state_json TEXT NOT NULL,
-    turn INTEGER NOT NULL,
-    phase TEXT NOT NULL,
-    winner TEXT,
-    created_at INTEGER NOT NULL,
-    updated_at INTEGER NOT NULL
-  );
-  
-  CREATE TABLE IF NOT EXISTS queue_entries (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    token TEXT NOT NULL,
-    ip TEXT,
-    created_at INTEGER NOT NULL
-  );
-  
-  CREATE INDEX IF NOT EXISTS idx_games_phase ON games(phase);
-  CREATE INDEX IF NOT EXISTS idx_queue_created ON queue_entries(created_at);
-`);
-
-// Prepared statements for better performance
-const insertGameStmt = db.prepare(`
-  INSERT OR REPLACE INTO games (id, p1_name, p2_name, state_json, turn, phase, winner, created_at, updated_at)
-  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-`);
-
-const updateGameStmt = db.prepare(`
-  UPDATE games SET state_json = ?, turn = ?, phase = ?, winner = ?, updated_at = ?
-  WHERE id = ?
-`);
-
-const insertQueueStmt = db.prepare(`
-  INSERT INTO queue_entries (name, token, ip, created_at)
-  VALUES (?, ?, ?, ?)
-`);
-
-const deleteQueueStmt = db.prepare(`
-  DELETE FROM queue_entries WHERE token = ?
-`);
-
-const loadActiveGamesStmt = db.prepare(`
-  SELECT * FROM games WHERE phase != 'over' ORDER BY created_at
-`);
-
-const loadQueueStmt = db.prepare(`
-  SELECT * FROM queue_entries ORDER BY created_at
-`);
-
-const getCompletedGamesStmt = db.prepare(`
-  SELECT * FROM games WHERE phase = 'over' ORDER BY updated_at DESC LIMIT 100
-`);
-
-// ============================================================
-// DATABASE HELPERS
-// ============================================================
-function saveGameToDB(game) {
-  const now = Date.now();
-  
-  const stateJson = JSON.stringify({
-    distance: game.distance,
-    scores: game.scores,
-    moves: game.moves,
-    lastResult: game.lastResult,
-    maxTurns: game.maxTurns,
-    botDifficulty: game.botDifficulty,
-    botSide: game.botSide,
-    exhibition: game.exhibition,
-    botP1Difficulty: game.botP1Difficulty,
-    botP2Difficulty: game.botP2Difficulty,
-    p1Token: game.p1Token,
-    p2Token: game.p2Token,
-    p1: game.p1,
-    p2: game.p2
-  });
-  
-  try {
-    const result = updateGameStmt.run(stateJson, game.turn, game.phase, game.winner, now, game.id);
-    if (result.changes === 0) {
-      // No rows updated, need to insert
-      insertGameStmt.run(
-        game.id, 
-        game.p1Name || 'P1', 
-        game.p2Name || 'P2', 
-        stateJson, 
-        game.turn, 
-        game.phase, 
-        game.winner, 
-        now, 
-        now
-      );
-    }
-  } catch (err) {
-    console.error(`[DB] Error saving game ${game.id}:`, err.message);
-  }
-}
-
-function loadGameFromDB(row) {
-  const game = createGame(row.id);
-  const state = JSON.parse(row.state_json);
-  
-  // Restore game state
-  game.p1Name = row.p1_name;
-  game.p2Name = row.p2_name;
-  game.turn = row.turn;
-  game.phase = row.phase;
-  game.winner = row.winner;
-  game.distance = state.distance;
-  game.scores = state.scores;
-  game.moves = state.moves;
-  game.lastResult = state.lastResult;
-  game.maxTurns = state.maxTurns || 30;
-  game.botDifficulty = state.botDifficulty;
-  game.botSide = state.botSide;
-  game.exhibition = state.exhibition;
-  game.botP1Difficulty = state.botP1Difficulty;
-  game.botP2Difficulty = state.botP2Difficulty;
-  game.p1Token = state.p1Token;
-  game.p2Token = state.p2Token;
-  game.p1 = state.p1;
-  game.p2 = state.p2;
-  
-  // Initialize runtime state
-  game.moveWaiters = [];
-  game.turnTimer = null;
-  
-  return game;
-}
-
-function saveQueueToDB(entry) {
-  insertQueueStmt.run(entry.name, entry.token, entry.ip || null, entry.timestamp);
-}
-
-function removeFromQueueDB(token) {
-  deleteQueueStmt.run(token);
-}
 
 // ============================================================
 // QUEUE WEBHOOK — wake OpenClaw when someone joins
@@ -260,93 +112,6 @@ const completedGames = [];     // finished game summaries
 let gameIdCounter = 1;
 const TURN_TIMEOUT_MS = 300_000; // 5 minutes per turn
 const QUEUE_TIMEOUT_MS = 300_000; // 5 minutes queue timeout
-
-// ============================================================
-// STARTUP DATA LOADING
-// ============================================================
-function loadDataFromDB() {
-  console.log('[DB] Loading data from database...');
-  
-  // Load active games
-  const activeGames = loadActiveGamesStmt.all();
-  for (const row of activeGames) {
-    const game = loadGameFromDB(row);
-    games.set(game.id, game);
-    
-    // Restore player mappings
-    if (game.p1Token) {
-      players.set(game.p1Token, { gameId: game.id, playerId: 'p1', name: game.p1Name });
-    }
-    if (game.p2Token) {
-      players.set(game.p2Token, { gameId: game.id, playerId: 'p2', name: game.p2Name });
-    }
-    if (game.p1 && game.exhibition) {
-      players.set(game.p1, { gameId: game.id, playerId: 'p1' });
-    }
-    if (game.p2 && game.exhibition) {
-      players.set(game.p2, { gameId: game.id, playerId: 'p2' });
-    }
-    
-    // Restart turn timer if game is in input phase
-    if (game.phase === 'input') {
-      startTurnTimer(game.id);
-    }
-    
-    console.log(`[DB] Loaded game ${game.id} (${game.p1Name} vs ${game.p2Name}), phase=${game.phase}, turn=${game.turn}`);
-  }
-  
-  // Load queue entries (recent ones only)
-  const queueEntries = loadQueueStmt.all();
-  const now = Date.now();
-  for (const row of queueEntries) {
-    if (now - row.created_at < QUEUE_TIMEOUT_MS) {
-      queue.push({
-        token: row.token,
-        name: row.name,
-        ip: row.ip,
-        timestamp: row.created_at
-      });
-      console.log(`[DB] Restored queue entry: ${row.name}`);
-    } else {
-      // Remove expired entries
-      deleteQueueStmt.run(row.token);
-    }
-  }
-  
-  // Load completed games for the recent history
-  const completed = getCompletedGamesStmt.all();
-  for (const row of completed) {
-    const state = JSON.parse(row.state_json);
-    completedGames.push({
-      id: row.id,
-      winner: row.winner,
-      turns: row.turn,
-      p1Name: row.p1_name,
-      p2Name: row.p2_name,
-      finalScore: `${state.scores.p1}-${state.scores.p2}`,
-      timestamp: row.updated_at,
-    });
-  }
-  
-  // Update gameIdCounter to avoid conflicts
-  const maxGameId = Math.max(
-    ...Array.from(games.keys()).map(id => {
-      const match = id.match(/^g(\d+)$/);
-      return match ? parseInt(match[1]) : 0;
-    }),
-    ...completed.map(row => {
-      const match = row.id.match(/^g(\d+)$/);
-      return match ? parseInt(match[1]) : 0;
-    }),
-    0
-  );
-  gameIdCounter = maxGameId + 1;
-  
-  console.log(`[DB] Loaded ${games.size} active games, ${queue.length} queue entries, ${completedGames.length} completed games. Next game ID: g${gameIdCounter}`);
-}
-
-// Load data on startup
-loadDataFromDB();
 
 // ============================================================
 // GAME LOGIC
@@ -637,9 +402,6 @@ function resolveIfReady(gameId) {
   } else {
     archiveGame(game);
   }
-  
-  // Save updated game state to database
-  saveGameToDB(game);
 
   // Notify waiting long-pollers
   if (game.moveWaiters) {
@@ -702,10 +464,6 @@ function matchPlayers(token1, name1, token2, name2) {
   players.set(token2, { gameId: id, playerId: 'p2', name: name2 });
 
   startTurnTimer(id);
-  
-  // Save new game to database
-  saveGameToDB(game);
-  
   return id;
 }
 
@@ -766,7 +524,6 @@ app.post('/api/join', joinLimiter, (req, res) => {
   const now = Date.now();
   while (queue.length > 0 && now - queue[0].timestamp > QUEUE_TIMEOUT_MS) {
     const stale = queue.shift();
-    removeFromQueueDB(stale.token);
     console.log(`[QUEUE] ${new Date().toISOString()} TIMEOUT name="${stale.name}" waited=${Math.round((now - stale.timestamp)/1000)}s`);
   }
 
@@ -775,9 +532,6 @@ app.post('/api/join', joinLimiter, (req, res) => {
   if (opponentIdx >= 0) {
     // Match with waiting player
     const opponent = queue.splice(opponentIdx, 1)[0];
-    // Remove opponent from database queue
-    removeFromQueueDB(opponent.token);
-    
     const gameId = matchPlayers(opponent.token, opponent.name, token, name);
     const game = games.get(gameId);
     console.log(`[MATCH] ${new Date().toISOString()} game=${gameId} p1="${opponent.name}" p2="${name}"`);
@@ -797,8 +551,6 @@ app.post('/api/join', joinLimiter, (req, res) => {
     // Add to queue
     const entry = { token, name, ip, timestamp: Date.now() };
     queue.push(entry);
-    // Save to database
-    saveQueueToDB(entry);
     console.log(`[QUEUE] ${new Date().toISOString()} JOIN name="${name}" queueSize=${queue.length}`);
     notifyQueueJoin(name);
 
@@ -826,8 +578,6 @@ app.post('/api/join', joinLimiter, (req, res) => {
         // Check if still in queue
         if (!queue.find(q => q.token === token)) {
           clearInterval(pollInterval);
-          // Also clean up database
-          removeFromQueueDB(token);
           if (!res.headersSent) res.json({ token, status: 'timeout', message: 'Queue expired. POST /api/join again.' });
         }
       }, 2000);
@@ -960,9 +710,6 @@ app.post('/api/practice', (req, res) => {
   players.set(token, { gameId: id, playerId: 'p1', name });
 
   startTurnTimer(id);
-  
-  // Save practice game to database
-  saveGameToDB(game);
 
   const state = getGameState(game, 'p1');
   res.json({
@@ -1019,9 +766,6 @@ app.post('/api/exhibition', (req, res) => {
   games.set(gameId, game);
   players.set(game.p1, { gameId, playerId: 'p1' });
   players.set(game.p2, { gameId, playerId: 'p2' });
-  
-  // Save exhibition game to database
-  saveGameToDB(game);
 
   // Run the exhibition with delays between turns
   function playExhibitionTurn() {
