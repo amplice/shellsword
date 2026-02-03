@@ -163,11 +163,27 @@ const fs = require('fs');
 const QUEUE_FLAG = path.join(__dirname, '.queue-waiting');
 
 function notifyQueueJoin(name) {
-  // Don't alert for our own auto-player
+  // Auto-player handles all matches — only alert for genuinely NEW players
   if (name === 'Nox' || name === 'Nox_CTF') {
     console.log(`[QUEUE] Auto-player "${name}" joined — no alert needed`);
     return;
   }
+  
+  // Known repeat queuers (auto-bots) — don't alert, auto-player handles them
+  const KNOWN_BOTS = ['kavklaww'];
+  if (KNOWN_BOTS.includes(name)) {
+    console.log(`[QUEUE] Known bot "${name}" joined — auto-player handles, no alert`);
+    return;
+  }
+  
+  // Don't spam alerts — only fire once per 30 minutes per name
+  try {
+    const flag = fs.existsSync(QUEUE_FLAG) ? JSON.parse(fs.readFileSync(QUEUE_FLAG, 'utf8')) : null;
+    if (flag && flag.name === name && Date.now() - new Date(flag.timestamp).getTime() < 1800000) {
+      console.log(`[QUEUE] Suppressing repeat alert for "${name}" (last alert <30min ago)`);
+      return;
+    }
+  } catch(e) { /* ignore parse errors */ }
   
   fs.writeFileSync(QUEUE_FLAG, JSON.stringify({ name, timestamp: new Date().toISOString() }));
   

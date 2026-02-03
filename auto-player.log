@@ -63,3 +63,215 @@
 [2026-02-03T02:52:49.504Z] Match started!
 [2026-02-03T02:52:49.512Z] Turn 0: dist=4 score=0-0 → advance
 [2026-02-03T02:53:04.550Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T02:56:01.787Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T02:56:03.511Z] === Shellsword Auto-Player started ===
+[2026-02-03T02:56:03.513Z] Joining queue (game 1)...
+[2026-02-03T02:56:03.600Z] Joined queue → token: a075245f...
+[2026-02-03T02:56:03.601Z] Match started!
+[2026-02-03T02:56:03.610Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T03:01:03.945Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T03:02:22.031Z] Turn 2: dist=1 score=0-0 → parry
+[2026-02-03T03:03:43.121Z] Turn 3: dist=4 score=1-0 → advance
+[2026-02-03T03:06:04.293Z] Turn 4: dist=2 score=1-0 → parry
+[2026-02-03T03:08:04.431Z] Turn 5: dist=2 score=1-0 → parry
+[2026-02-03T03:10:04.567Z] Turn 6: dist=4 score=2-0 → advance
+[2026-02-03T03:12:04.700Z] Turn 7: dist=2 score=2-0 → parry
+[2026-02-03T03:14:04.832Z] Turn 8: dist=2 score=2-0 → parry
+[2026-02-03T03:16:04.962Z] Game over: WIN | Score: 3-0 | Turns: 9 | Game: g4
+[2026-02-03T03:16:04.962Z] Record: 1W-0L-0D (1 games)
+[2026-02-03T03:16:09.962Z] Joining queue (game 2)...
+[2026-02-03T03:16:10.011Z] Joined queue → token: 7a7abd07...
+[2026-02-03T03:16:10.012Z] Match started!
+[2026-02-03T03:48:40.379Z] === Shellsword Auto-Player started ===
+[2026-02-03T03:48:40.381Z] Joining queue (game 1)...
+[2026-02-03T03:48:40.468Z] Joined queue → token: 58670284...
+[2026-02-03T03:48:40.468Z] Match started!
+[2026-02-03T04:00:03.819Z] === Shellsword Auto-Player started ===
+[2026-02-03T04:00:03.821Z] Joining queue (game 1)...
+[2026-02-03T04:00:03.913Z] Joined queue → token: 1f1a070b...
+[2026-02-03T04:00:03.914Z] Match started!
+[2026-02-03T04:00:03.921Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T04:05:04.247Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T04:10:04.564Z] Turn 2: dist=1 score=0-0 → lunge
+[2026-02-03T04:15:04.890Z] Turn 3: dist=4 score=1-0 → advance
+[2026-02-03T04:20:05.212Z] Turn 4: dist=2 score=1-0 → advance
+[2026-02-03T04:25:05.533Z] Turn 5: dist=1 score=1-0 → parry
+[2026-02-03T04:30:05.819Z] Turn 6: dist=1 score=1-0 → lunge
+[2026-02-03T04:35:06.113Z] Turn 7: dist=4 score=2-0 → advance
+[2026-02-03T04:40:06.412Z] Turn 8: dist=2 score=2-0 → parry
+[2026-02-03T04:45:06.711Z] Turn 9: dist=1 score=2-0 → parry
+[2026-02-03T04:50:04.020Z] Turn 10: dist=1 score=2-0 → lunge
+[2026-02-03T04:55:04.319Z] Game over: WIN | Score: 3-0 | Turns: 11 | Game: g6
+[2026-02-03T04:55:04.319Z] Record: 1W-0L-0D (1 games)
+[2026-02-03T04:55:09.320Z] Joining queue (game 2)...
+[2026-02-03T04:55:09.354Z] Joined queue → token: ac54ab01...
+[2026-02-03T04:55:09.355Z] Match started!
+[2026-02-03T04:58:36.557Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T05:00:03.645Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T05:01:21.724Z] Turn 2: dist=4 score=0-1 → advance
+[2026-02-03T05:04:00.862Z] Turn 3: dist=2 score=0-1 → lunge
+[2026-02-03T05:09:01.122Z] Turn 4: dist=1 score=0-1 → parry
+[2026-02-03T05:09:58.180Z] Turn 5: dist=4 score=1-1 → advance
+[2026-02-03T05:14:40.441Z] Turn 6: dist=2 score=1-1 → lunge
+[2026-02-03T05:18:31.673Z] Turn 7: dist=2 score=1-1 → advance
+[2026-02-03T05:22:43.894Z] Turn 8: dist=1 score=1-1 → lunge
+[2026-02-03T05:24:25.981Z] Turn 9: dist=1 score=2-2 → lunge
+[2026-02-03T05:29:23.236Z] Game over: WIN | Score: 3-2 | Turns: 10 | Game: g8
+[2026-02-03T05:29:23.237Z] Record: 2W-0L-0D (2 games)
+[2026-02-03T05:29:28.237Z] Joining queue (game 3)...
+[2026-02-03T05:29:28.245Z] Joined queue → token: e4570893...
+[2026-02-03T05:29:28.245Z] Match started!
+[2026-02-03T05:37:49.490Z] === Shellsword Auto-Player started ===
+[2026-02-03T05:37:49.492Z] Joining queue (game 1)...
+[2026-02-03T05:37:49.577Z] Joined queue → token: 2d27e1a4...
+[2026-02-03T05:37:49.578Z] Match started!
+[2026-02-03T05:37:49.586Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T05:42:49.885Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T05:47:50.164Z] Turn 2: dist=1 score=0-0 → parry
+[2026-02-03T05:52:50.450Z] Turn 3: dist=1 score=0-0 → parry
+[2026-02-03T05:57:50.739Z] Turn 4: dist=1 score=0-0 → lunge
+[2026-02-03T06:02:51.025Z] Turn 5: dist=4 score=1-0 → advance
+[2026-02-03T06:07:51.308Z] Turn 6: dist=2 score=1-0 → parry
+[2026-02-03T06:12:51.576Z] Turn 7: dist=1 score=1-0 → parry
+[2026-02-03T06:17:51.837Z] Turn 8: dist=1 score=1-0 → parry
+[2026-02-03T06:22:52.081Z] Turn 9: dist=1 score=1-0 → parry
+[2026-02-03T06:27:52.360Z] Turn 10: dist=1 score=1-0 → lunge
+[2026-02-03T06:32:49.639Z] Turn 11: dist=4 score=2-0 → advance
+[2026-02-03T06:37:49.924Z] Turn 12: dist=2 score=2-0 → retreat
+[2026-02-03T06:42:50.184Z] Turn 13: dist=2 score=2-0 → retreat
+[2026-02-03T06:47:50.433Z] Turn 14: dist=2 score=2-0 → parry
+[2026-02-03T06:52:50.688Z] Turn 15: dist=1 score=2-0 → lunge
+[2026-02-03T06:57:50.959Z] Game over: WIN | Score: 3-0 | Turns: 16 | Game: g9
+[2026-02-03T06:57:50.959Z] Record: 1W-0L-0D (1 games)
+[2026-02-03T06:57:55.959Z] Joining queue (game 2)...
+[2026-02-03T06:57:55.980Z] Joined queue → token: be62d6a3...
+[2026-02-03T06:57:55.980Z] Match started!
+[2026-02-03T06:58:20.002Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T06:58:23.015Z] Turn 1: dist=2 score=0-0 → parry
+[2026-02-03T07:01:05.167Z] Turn 2: dist=4 score=1-0 → advance
+[2026-02-03T07:06:05.445Z] Turn 3: dist=2 score=1-0 → advance
+[2026-02-03T07:10:05.634Z] Turn 4: dist=1 score=1-0 → parry
+[2026-02-03T07:11:50.714Z] Turn 5: dist=1 score=1-0 → parry
+[2026-02-03T07:12:14.738Z] Turn 6: dist=4 score=2-0 → advance
+[2026-02-03T07:12:26.752Z] Turn 7: dist=2 score=2-0 → parry
+[2026-02-03T07:12:35.764Z] Turn 8: dist=1 score=2-0 → lunge
+[2026-02-03T07:16:35.972Z] Game over: WIN | Score: 3-1 | Turns: 9 | Game: g10
+[2026-02-03T07:16:35.972Z] Record: 2W-0L-0D (2 games)
+[2026-02-03T07:16:40.972Z] Joining queue (game 3)...
+[2026-02-03T07:16:40.983Z] Joined queue → token: 351e1fc2...
+[2026-02-03T07:16:40.983Z] Match started!
+[2026-02-03T07:46:06.067Z] === Shellsword Auto-Player started ===
+[2026-02-03T07:46:06.069Z] Joining queue (game 1)...
+[2026-02-03T07:46:06.159Z] Joined queue → token: 94271944...
+[2026-02-03T07:46:06.159Z] Match started!
+[2026-02-03T07:46:06.165Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T07:51:06.462Z] Turn 1: dist=2 score=0-0 → parry
+[2026-02-03T07:56:06.749Z] Turn 2: dist=1 score=0-0 → parry
+[2026-02-03T08:01:07.058Z] Turn 3: dist=1 score=0-0 → lunge
+[2026-02-03T08:06:07.373Z] Turn 4: dist=4 score=1-0 → advance
+[2026-02-03T08:11:07.647Z] Turn 5: dist=2 score=1-0 → parry
+[2026-02-03T08:16:07.964Z] Turn 6: dist=1 score=1-0 → parry
+[2026-02-03T08:21:08.234Z] Turn 7: dist=1 score=1-0 → lunge
+[2026-02-03T08:26:08.522Z] Turn 8: dist=4 score=2-0 → advance
+[2026-02-03T08:31:08.793Z] Turn 9: dist=2 score=2-0 → retreat
+[2026-02-03T08:36:09.069Z] Turn 10: dist=2 score=2-0 → parry
+[2026-02-03T08:41:06.335Z] Turn 11: dist=1 score=2-0 → lunge
+[2026-02-03T08:46:06.596Z] Game over: WIN | Score: 3-0 | Turns: 12 | Game: g11
+[2026-02-03T08:46:06.597Z] Record: 1W-0L-0D (1 games)
+[2026-02-03T08:46:11.597Z] Joining queue (game 2)...
+[2026-02-03T08:46:11.628Z] Joined queue → token: b412f192...
+[2026-02-03T08:46:11.628Z] Match started!
+[2026-02-03T08:46:32.648Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T08:46:35.654Z] Turn 1: dist=2 score=0-0 → parry
+[2026-02-03T08:49:17.798Z] Turn 2: dist=4 score=1-0 → advance
+[2026-02-03T08:54:18.087Z] Turn 3: dist=2 score=1-0 → retreat
+[2026-02-03T08:54:39.109Z] Turn 4: dist=3 score=1-0 → lunge
+[2026-02-03T08:58:24.306Z] Turn 5: dist=4 score=1-1 → advance
+[2026-02-03T09:00:36.443Z] Turn 6: dist=2 score=1-1 → parry
+[2026-02-03T09:05:36.710Z] Turn 7: dist=1 score=1-1 → parry
+[2026-02-03T09:06:36.767Z] Turn 8: dist=4 score=2-1 → advance
+[2026-02-03T09:11:37.016Z] Turn 9: dist=2 score=2-1 → parry
+[2026-02-03T09:16:37.278Z] Turn 10: dist=1 score=2-1 → lunge
+[2026-02-03T09:21:37.538Z] Game over: WIN | Score: 3-1 | Turns: 11 | Game: g14
+[2026-02-03T09:21:37.538Z] Record: 2W-0L-0D (2 games)
+[2026-02-03T09:21:42.538Z] Joining queue (game 3)...
+[2026-02-03T09:21:42.546Z] Joined queue → token: c9e8921c...
+[2026-02-03T09:21:42.546Z] Match started!
+[2026-02-03T13:22:54.794Z] === Shellsword Auto-Player started ===
+[2026-02-03T13:22:54.796Z] Joining queue (game 1)...
+[2026-02-03T13:22:54.885Z] Joined queue → token: 6f49e98c...
+[2026-02-03T13:22:54.886Z] Match started!
+[2026-02-03T13:22:54.893Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T13:27:55.179Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T13:32:55.479Z] Turn 2: dist=1 score=0-0 → parry
+[2026-02-03T13:37:55.773Z] Turn 3: dist=1 score=0-0 → parry
+[2026-02-03T13:42:56.073Z] Turn 4: dist=1 score=0-0 → parry
+[2026-02-03T13:47:56.357Z] Turn 5: dist=1 score=0-0 → parry
+[2026-02-03T13:52:56.648Z] Turn 6: dist=1 score=0-0 → parry
+[2026-02-03T13:57:56.941Z] Turn 7: dist=1 score=0-0 → lunge
+[2026-02-03T14:02:57.206Z] Turn 8: dist=4 score=1-0 → advance
+[2026-02-03T14:07:57.470Z] Turn 9: dist=2 score=1-0 → parry
+[2026-02-03T14:12:57.731Z] Turn 10: dist=1 score=1-0 → lunge
+[2026-02-03T14:17:54.997Z] Turn 11: dist=4 score=2-0 → advance
+[2026-02-03T14:22:55.268Z] Turn 12: dist=2 score=2-0 → retreat
+[2026-02-03T14:27:55.518Z] Turn 13: dist=2 score=2-0 → retreat
+[2026-02-03T14:32:55.784Z] Turn 14: dist=2 score=2-0 → parry
+[2026-02-03T14:35:10.190Z] === Shellsword Auto-Player started ===
+[2026-02-03T14:35:10.192Z] Joining queue (game 1)...
+[2026-02-03T14:35:10.275Z] Joined queue → token: ce4f2f05...
+[2026-02-03T14:35:10.276Z] Match started!
+[2026-02-03T14:35:10.284Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T14:40:10.575Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T14:45:10.853Z] Turn 2: dist=1 score=0-0 → lunge
+[2026-02-03T14:50:11.142Z] Turn 3: dist=4 score=1-0 → advance
+[2026-02-03T14:50:42.194Z] === Shellsword Auto-Player started ===
+[2026-02-03T14:50:42.196Z] Joining queue (game 1)...
+[2026-02-03T14:50:42.282Z] Joined queue → token: 2bb66417...
+[2026-02-03T14:50:42.282Z] Match started!
+[2026-02-03T14:50:42.290Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T14:55:42.594Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T15:00:42.877Z] Turn 2: dist=1 score=0-0 → parry
+[2026-02-03T15:05:43.172Z] Turn 3: dist=1 score=0-0 → parry
+[2026-02-03T15:08:07.617Z] === Shellsword Auto-Player started ===
+[2026-02-03T15:08:07.619Z] Joining queue (game 1)...
+[2026-02-03T15:08:07.698Z] Joined queue → token: c7473265...
+[2026-02-03T15:08:07.699Z] Match started!
+[2026-02-03T15:08:07.707Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T15:13:08.006Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T15:18:08.290Z] Turn 2: dist=1 score=0-0 → parry
+[2026-02-03T15:18:23.745Z] === Shellsword Auto-Player started ===
+[2026-02-03T15:18:23.747Z] Joining queue (game 1)...
+[2026-02-03T15:18:23.832Z] Joined queue → token: 66f38c30...
+[2026-02-03T15:18:23.832Z] Match started!
+[2026-02-03T15:18:23.840Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T15:23:24.136Z] Turn 1: dist=2 score=0-0 → lunge
+[2026-02-03T15:28:24.416Z] Turn 2: dist=1 score=0-0 → lunge
+[2026-02-03T15:30:03.757Z] === Shellsword Auto-Player started ===
+[2026-02-03T15:30:03.760Z] Joining queue (game 1)...
+[2026-02-03T15:30:03.861Z] Joined queue → token: 73341775...
+[2026-02-03T15:30:03.862Z] Match started!
+[2026-02-03T15:30:03.870Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T15:35:04.165Z] Turn 1: dist=2 score=0-0 → parry
+[2026-02-03T15:35:32.997Z] === Shellsword Auto-Player started ===
+[2026-02-03T15:35:32.999Z] Joining queue (game 1)...
+[2026-02-03T15:35:33.083Z] Joined queue → token: 95d3f3a1...
+[2026-02-03T15:35:33.083Z] Match started!
+[2026-02-03T15:35:33.090Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T15:40:33.376Z] Turn 1: dist=2 score=0-0 → advance
+[2026-02-03T15:43:05.046Z] === Shellsword Auto-Player started ===
+[2026-02-03T15:43:05.048Z] Joining queue (game 1)...
+[2026-02-03T15:43:05.130Z] Joined queue → token: 818a1796...
+[2026-02-03T15:43:05.131Z] Match started!
+[2026-02-03T15:43:05.139Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T15:48:05.430Z] Turn 1: dist=2 score=0-0 → parry
+[2026-02-03T15:50:35.113Z] === Shellsword Auto-Player started ===
+[2026-02-03T15:50:35.115Z] Joining queue (game 1)...
+[2026-02-03T15:50:35.203Z] Joined queue → token: 11841c9e...
+[2026-02-03T15:50:35.204Z] Match started!
+[2026-02-03T15:50:35.210Z] Turn 0: dist=4 score=0-0 → advance
+[2026-02-03T15:51:04.272Z] === Shellsword Auto-Player started ===
+[2026-02-03T15:51:04.274Z] Joining queue (game 1)...
+[2026-02-03T15:51:04.354Z] Joined queue → token: 50e0af8f...
+[2026-02-03T15:51:04.354Z] Match started!
+[2026-02-03T16:26:18.367Z] State fetch error: fetch failed
+[2026-02-03T16:26:18.368Z] Failed to get state, retrying...
