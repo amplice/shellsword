@@ -144,6 +144,7 @@ function loadGameFromDB(row) {
   // Initialize runtime state
   game.moveWaiters = [];
   game.turnTimer = null;
+  game.updatedAt = row.updated_at || Date.now();
   
   return game;
 }
@@ -381,7 +382,8 @@ function createGame(id) {
     p2Name: '',
     turnTimer: null,
     moveWaiters: [],
-    maxTurns: 30
+    maxTurns: 30,
+    updatedAt: Date.now()
   };
 }
 
@@ -647,6 +649,7 @@ function resolveIfReady(gameId) {
   if (game.turnTimer) { clearTimeout(game.turnTimer); game.turnTimer = null; }
 
   const log = resolveTurn(game);
+  game.updatedAt = Date.now();
   if (game.phase !== 'over') {
     game.phase = 'input';
     startTurnTimer(gameId);
@@ -683,9 +686,11 @@ function startTurnTimer(gameId) {
   if (!game || game.phase !== 'input') return;
 
   game.turnTimer = setTimeout(() => {
-    // Auto-submit 'advance' for anyone who hasn't moved
-    if (!game.moves.p1) game.moves.p1 = 'advance';
-    if (!game.moves.p2) game.moves.p2 = 'advance';
+    // Auto-submit random move for anyone who hasn't moved (prevents CLASH deadlocks)
+    const defaultMoves = ['advance', 'retreat', 'lunge', 'parry'];
+    const randomMove = () => defaultMoves[Math.floor(Math.random() * defaultMoves.length)];
+    if (!game.moves.p1) game.moves.p1 = randomMove();
+    if (!game.moves.p2) game.moves.p2 = randomMove();
     resolveIfReady(gameId);
   }, TURN_TIMEOUT_MS);
 }
@@ -1135,6 +1140,38 @@ wss.on('connection', (ws) => {
 // START
 // ============================================================
 const PORT = process.env.PORT || 3001;
+// ============================================================
+// STALE GAME CLEANUP — forfeit games with no activity
+// ============================================================
+const STALE_GAME_MS = 30 * 60 * 1000; // 30 minutes
+
+function cleanupStaleGames() {
+  const now = Date.now();
+  let cleaned = 0;
+  for (const [gameId, game] of games.entries()) {
+    if (game.phase === 'over') continue;
+    const lastActivity = game.updatedAt || game.createdAt || 0;
+    if (now - lastActivity > STALE_GAME_MS) {
+      // Forfeit stale game
+      game.winner = 'sudden_death';
+      game.phase = 'over';
+      game.lastResult = 'Game forfeited due to inactivity.';
+      if (game.turnTimer) { clearTimeout(game.turnTimer); game.turnTimer = null; }
+      archiveGame(game);
+      updateGameInDB(game);
+      games.delete(gameId);
+      cleaned++;
+      console.log(`[CLEANUP] Forfeited stale game ${gameId} (${game.p1Name} vs ${game.p2Name}, turn ${game.turn})`);
+    }
+  }
+  if (cleaned > 0) console.log(`[CLEANUP] Cleaned ${cleaned} stale games`);
+}
+
+// Run cleanup every 5 minutes
+setInterval(cleanupStaleGames, 5 * 60 * 1000);
+// Also clean on startup
+setTimeout(cleanupStaleGames, 5000);
+
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Shellsword running on http://0.0.0.0:${PORT}`);
   console.log(`LLM API: POST /api/join, POST /api/move, GET /api/state/:token`);
