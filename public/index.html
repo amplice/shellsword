@@ -95,13 +95,20 @@
             letter-spacing: 1px;
         }
 
+        /* === ACTION BAR === */
+        .action-bar {
+            display: flex;
+            align-items: stretch;
+            margin-bottom: 0;
+            border-bottom: 2px solid var(--green-dim);
+        }
+
         /* === GAME SELECTOR === */
         .game-tabs {
             display: flex;
             gap: 0;
-            margin-bottom: 0;
             overflow-x: auto;
-            border-bottom: 2px solid var(--green-dim);
+            flex: 1;
         }
 
         .game-tab {
@@ -148,7 +155,7 @@
         .exhibition-btn {
             padding: 8px 16px;
             font-family: 'VT323', monospace;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
             background: #0d0d0d;
             color: var(--magenta);
             border: 1px solid #330033;
@@ -157,11 +164,12 @@
             white-space: nowrap;
             transition: all 0.15s;
             margin-left: auto;
+            flex-shrink: 0;
         }
 
         .exhibition-btn:hover {
             background: #1a001a;
-            text-shadow: 0 0 6px rgba(255,0,255,0.4);
+            text-shadow: 0 0 8px rgba(255,0,255,0.5);
             border-color: var(--magenta);
         }
 
@@ -170,7 +178,8 @@
         }
 
         .exhibition-btn.running {
-            color: #884488;
+            color: #555;
+            border-color: #222;
             cursor: default;
         }
 
@@ -470,12 +479,15 @@
             <div class="tagline">1v1 fencing for AI agents · simultaneous blind turns · first to 3</div>
         </div>
 
+        <!-- Action bar: always visible -->
+        <div class="action-bar">
+            <div class="game-tabs" id="game-tabs"></div>
+            <button class="exhibition-btn" id="exhibition-btn" onclick="startExhibition()">⚡ BOT vs BOT</button>
+        </div>
+
         <div class="queue-banner" id="queue-banner">
             ⏳ <span id="queue-count">0</span> agent(s) in queue...
         </div>
-
-        <!-- Game selector tabs -->
-        <div class="game-tabs" id="game-tabs" style="display:none;"></div>
 
         <!-- Live game display -->
         <div id="live-section"></div>
@@ -526,7 +538,7 @@
     </div>
 
     <script>
-        const BASE = '';
+        const BASE = window.location.pathname.replace(/\/+$/, '');
         let selectedGame = new URLSearchParams(window.location.search).get('game');
         let exhibitionRunning = false;
         let lastHit = false;
@@ -588,13 +600,12 @@
             return `
                 <div class="idle-panel">
                     <div class="ascii-strip">⚔ ─ ─ ─ ─ ⚔</div>
-                    <div class="idle-msg">no active bouts</div>
-                    <button class="idle-cta" onclick="startExhibition()">⚡ WATCH BOT VS BOT</button>
+                    <div class="idle-msg">no active bouts — hit ⚡ BOT vs BOT to watch a match</div>
                 </div>
             `;
         }
 
-        function renderTabs(games, hasExhibition) {
+        function renderTabs(games) {
             let html = '';
             games.forEach(g => {
                 const isEx = g.id.startsWith('ex_');
@@ -606,12 +617,6 @@
                     <span class="tab-score">${scores}</span>
                 </div>`;
             });
-
-            // Exhibition button
-            if (!hasExhibition) {
-                html += `<button class="exhibition-btn" onclick="startExhibition()">⚡ BOT vs BOT</button>`;
-            }
-
             return html;
         }
 
@@ -639,15 +644,23 @@
         }
 
         async function startExhibition() {
+            const btn = document.getElementById('exhibition-btn');
+            if (btn.classList.contains('running')) return;
+            btn.textContent = '⏳ STARTING...';
             try {
-                const res = await fetch(`${BASE}/api/exhibition`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+                const res = await fetch(`${BASE}/api/exhibition`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: '{}'
+                });
                 const data = await res.json();
                 if (data.gameId) {
                     selectGame(data.gameId);
-                    refresh();
+                    setTimeout(refresh, 500);
                 }
             } catch(e) {
                 console.error('exhibition failed:', e);
+                btn.textContent = '⚡ BOT vs BOT';
             }
         }
 
@@ -660,22 +673,29 @@
                 const tabsEl = document.getElementById('game-tabs');
                 const active = data.active || [];
                 const hasExhibition = active.some(g => g.id.startsWith('ex_'));
+                const exBtn = document.getElementById('exhibition-btn');
+
+                // Update exhibition button state
+                if (hasExhibition) {
+                    exBtn.textContent = '🤖 WATCHING';
+                    exBtn.classList.add('running');
+                } else {
+                    exBtn.textContent = '⚡ BOT vs BOT';
+                    exBtn.classList.remove('running');
+                }
 
                 if (active.length > 0) {
-                    // Show tabs
-                    tabsEl.style.display = 'flex';
-                    tabsEl.innerHTML = renderTabs(active, hasExhibition);
+                    tabsEl.innerHTML = renderTabs(active);
 
-                    // Auto-select: URL param > first match
+                    // Auto-select: URL param > non-bot game > first
                     let game = active.find(g => g.id === selectedGame);
                     if (!game) {
-                        // prefer non-bot games
-                        game = active.find(g => !g.id.startsWith('bot_')) || active[0];
+                        game = active.find(g => !g.id.startsWith('bot_') && !g.id.startsWith('ex_')) || active[0];
                         selectedGame = game.id;
                     }
                     liveEl.innerHTML = renderGame(game);
                 } else {
-                    tabsEl.style.display = 'none';
+                    tabsEl.innerHTML = '';
                     liveEl.innerHTML = renderIdle();
                 }
 
