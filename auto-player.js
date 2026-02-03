@@ -19,6 +19,7 @@ const PLAYER_NAME = 'Nox';
 const POLL_INTERVAL = 3000;   // 3s between state polls
 const QUEUE_RETRY = 30000;    // 30s between queue attempts
 const MAX_GAMES = 100;        // stop after this many games
+const STALE_TIMEOUT = 180000; // 3 min of no turn progress = abandon game
 
 const fs = require('fs');
 const path = require('path');
@@ -145,6 +146,8 @@ function sleep(ms) {
 async function playMatch(token) {
   log('Match started!');
   let moveCount = 0;
+  let lastTurn = -1;
+  let lastTurnChangeTime = Date.now();
 
   while (true) {
     const state = await getState(token);
@@ -152,6 +155,19 @@ async function playMatch(token) {
       log('Failed to get state, retrying...');
       await sleep(POLL_INTERVAL);
       continue;
+    }
+
+    // Track turn progress for stale detection
+    const currentTurn = state.stateJson?.turn ?? state.turn ?? -1;
+    if (currentTurn !== lastTurn) {
+      lastTurn = currentTurn;
+      lastTurnChangeTime = Date.now();
+    }
+
+    // Stale game detection — opponent AFK
+    if (Date.now() - lastTurnChangeTime > STALE_TIMEOUT && state.status === 'waiting_for_opponent') {
+      log(`Stale game (no progress for ${Math.round(STALE_TIMEOUT/1000)}s) — abandoning to re-queue`);
+      return { result: 'ABANDONED', score: 0, oppScore: 0, turns: currentTurn, gameId: state.gameId };
     }
 
     // Game over
