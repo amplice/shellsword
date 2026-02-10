@@ -198,6 +198,8 @@ async function playMatch(token) {
   let lastTurn = -1;
   let lastTurnChangeTime = Date.now();
   let consecutiveErrors = 0;
+  let unknownTokenRetries = 0;
+  const MAX_UNKNOWN_RETRIES = 40; // ~2 min of waiting for match at 3s intervals
 
   while (true) {
     const state = await getState(token);
@@ -214,7 +216,23 @@ async function playMatch(token) {
     }
     consecutiveErrors = 0; // reset on success
 
-    // Invalid token (game cleaned up server-side)
+    // Unknown token — might still be in queue waiting for match
+    if (state.error && (state.error.includes('Unknown token') || state.error.includes('unknown'))) {
+      unknownTokenRetries++;
+      if (unknownTokenRetries >= MAX_UNKNOWN_RETRIES) {
+        log(`Still unknown after ${unknownTokenRetries} retries — giving up`);
+        clearState();
+        return { result: 'CLEANED', turns: lastTurn };
+      }
+      if (unknownTokenRetries % 10 === 0) {
+        log(`Waiting for match... (${unknownTokenRetries}/${MAX_UNKNOWN_RETRIES})`);
+      }
+      await sleep(POLL_INTERVAL);
+      continue;
+    }
+    unknownTokenRetries = 0; // matched!
+
+    // Other server error (not unknown token)
     if (state.error) {
       log(`Server error: ${state.error} — game may be cleaned up`);
       clearState();
